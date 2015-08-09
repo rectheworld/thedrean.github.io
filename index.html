@@ -1,26 +1,87 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Places search box</title>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
    	<script src="index.js"></script>
   </head>
-  <body>
-   <!-- <div id="container"> -->
-   <div id="demographics">
-   		<input id="pac-input" class="controls" type="text" placeholder="Address" style="position:fixed">
-   		<br>
-    	<input id="type" type="text" placeholder="Type" style="position:fixed">
-    	<br>
-    	<button id="button" type="submit">Find Businesses</button>
-    </div>
 
-	
-    <div id="map-canvas" ></div>
-  <!--  </div>  -->
+  <body>
+		   <div id="gmap_canvas"></div>
+	<div class="actions">
+	    <div class="button">
+	        <label for="gmap_where">Where:</label>
+	        <input id="gmap_where" type="text" name="gmap_where" /></div>
+	    <div id="button2" class="button" onclick="findAddress(); return false;">Search for address</div>
+	    <div class="button">
+	        <label for="gmap_keyword">Keyword (optional):</label>
+	        <input id="gmap_keyword" type="text" name="gmap_keyword" /></div>
+	    <div class="button">
+	        <label for="gmap_type">Type:</label>
+	        <select id="gmap_type">
+	            <option value="art_gallery">art_gallery</option>
+	            <option value="accounting">accounting</option>
+	            <option value="airport">airport</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="art_gallery">art_gallery</option>
+	            <option value="accounting">accounting</option>
+	            <option value="airport">airport</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="art_gallery">art_gallery</option>
+	            <option value="accounting">accounting</option>
+	            <option value="airport">airport</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="art_gallery">art_gallery</option>
+	            <option value="accounting">accounting</option>
+	            <option value="airport">airport</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="art_gallery">art_gallery</option>
+	            <option value="accounting">accounting</option>
+	            <option value="airport">airport</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            <option value="accounting">accounting</option>
+	            
+	            <option value="atm">atm</option>
+	            <option value="bank">bank</option>
+	            <option value="bar">bar</option>
+	            <option value="cafe">cafe</option>
+	            <option value="food">food</option>
+	            <option value="hospital">hospital</option>
+	            <option value="police">police</option>
+	            <option value="store">store</option>
+	        </select>
+	    </div>
+	    <div class="button">
+	        <label for="gmap_radius">Radius:</label>
+	        <select id="gmap_radius">
+	            <option value="500">500</option>
+	            <option value="1000">1000</option>
+	            <option value="1500">1500</option>
+	            <option value="5000">5000</option>
+	        </select>
+	    </div>
+	    <input type="hidden" id="lat" name="lat" value="38.9047" />
+	    <input type="hidden" id="lng" name="lng" value="-77.0164" />
+	    <div id="button1" class="button" onclick="findPlaces(); return false;">Search for objects</div>
+	</div>
+
 
     
    

@@ -1,90 +1,56 @@
-html, body, #map-canvas {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-       /* position: fixed;*/
-      }
-
-      .controls {
-        margin-top: 16px;
-        border: 1px solid transparent;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        height: 32px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-
-      #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-        margin-top: 200px;
-      }
-      #type{
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-        margin-top: 200px;
-      }
-      
-     /* form{
-        position: absolute;
-      }*/
-
-      #type{
-        /*margin-left: 300px;*/
-        margin-top: 300px;
-      }
-
-      #button{
-        margin-top: 400px;
-      }
-
-      #pac-input:focus {
-        border-color: #4d90fe;
-      }
-
-      .pac-container {
-        font-family: Roboto;
-      }
-
-      #type-selector {
-        color: #fff;
-        background-color: #4d90fe;
-        padding: 5px 11px 0px 11px;
-      }
-
-      #type-selector label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-      }
-
- #target {
-        width: 345px;
-
-      }
-      #map-canvas{
-        width: 75%;
-      }
-
-.container{
-  width: 1800px;
+#gmap_canvas {
+    height: 1000px;
+    position: relative;
+    width: 1800px;
 }
+.actions {
+    background-color: #FFFFFF;
+    bottom: 30px;
+    padding: 10px;
+    position: absolute;
+    right: 30px;
+    z-index: 2;
 
-#demographics{
-  float: left;
-  width: 25%;
+    border-top: 1px solid #abbbcc;
+    border-left: 1px solid #a7b6c7;
+    border-bottom: 1px solid #a1afbf;
+    border-right: 1px solid #a7b6c7;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+}
+.actions label {
+    display: block;
+    margin: 2px 0 5px 10px;
+    text-align: left;
+}
+.actions input, .actions select {
+    width: 85%;
+}
+.button {
+   
+}
+.button:hover {
+    background-color: #ccd9e8;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ccd9e8), color-stop(100%, #c1d4e8));
+    background-image: -webkit-linear-gradient(top, #ccd9e8, #c1d4e8);
+    background-image: -moz-linear-gradient(top, #ccd9e8, #c1d4e8);
+    background-image: -ms-linear-gradient(top, #ccd9e8, #c1d4e8);
+    background-image: -o-linear-gradient(top, #ccd9e8, #c1d4e8);
+    background-image: linear-gradient(top, #ccd9e8, #c1d4e8);
+    border-top: 1px solid #a1afbf;
+    border-left: 1px solid #9caaba;
+    border-bottom: 1px solid #96a3b3;
+    border-right: 1px solid #9caaba;
+    -webkit-box-shadow: inset 0 1px 0 0 #f2f2f2;
+    -moz-box-shadow: inset 0 1px 0 0 #f2f2f2;
+    box-shadow: inset 0 1px 0 0 #f2f2f2;
+    color: #163659;
+    cursor: pointer;
+}
+.button:active {
+    border: 1px solid #8c98a7;
+    -webkit-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eeeeee;
+    -moz-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eeeeee;
+    box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eeeeee;
 }

@@ -1,78 +1,141 @@
-// This example adds a search box to a map, using the Google Place Autocomplete
-// feature. People can enter geographical searches. The search box will return a
-// pick list containing a mix of places and predicted search terms.
+var geocoder;
+var map;
+var markers = Array();
+var infos = Array();
 
 function initialize() {
+    // prepare Geocoder
+    geocoder = new google.maps.Geocoder();
 
-  var markers = [];
-  var map = new google.maps.Map(document.getElementById('map-canvas'), {
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
+    // set initial position (New York)
+    var myLatlng = new google.maps.LatLng(38.9047,-77.0164);
 
-  var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-33.8902, 151.1759),
-      new google.maps.LatLng(-33.8474, 151.2631));
-  map.fitBounds(defaultBounds);
-
-  // Create the search box and link it to the UI element.
-  var input = /** @type {HTMLInputElement} */(
-      document.getElementById('pac-input'));
-  // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-  
-
-  var searchBox = new google.maps.places.SearchBox(
-    /** @type {HTMLInputElement} */(input));
-
-  // [START region_getplaces]
-  // Listen for the event fired when the user selects an item from the
-  // pick list. Retrieve the matching places for that item.
-  google.maps.event.addListener(searchBox, 'places_changed', function() {
-    var places = searchBox.getPlaces();
-
-    if (places.length == 0) {
-      return;
-    }
-    for (var i = 0, marker; marker = markers[i]; i++) {
-      marker.setMap(null);
-    }
-
-    // For each place, get the icon, place name, and location.
-    markers = [];
-    var bounds = new google.maps.LatLngBounds();
-    for (var i = 0, place; place = places[i]; i++) {
-      var image = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
-
-      // Create a marker for each place.
-      var marker = new google.maps.Marker({
-        map: map,
-        icon: image,
-        title: place.name,
-        position: place.geometry.location
-      });
-
-      markers.push(marker);
-
-      bounds.extend(place.geometry.location);
-    }
-
-    map.fitBounds(bounds);
-  });
-  // [END region_getplaces]
-
-  // Bias the SearchBox results towards places that are within the bounds of the
-  // current map's viewport.
-  google.maps.event.addListener(map, 'bounds_changed', function() {
-    var bounds = map.getBounds();
-    searchBox.setBounds(bounds);
-  });
+    var myOptions = { // default map options
+        zoom: 14,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
 }
 
+// clear overlays function
+function clearOverlays() {
+    if (markers) {
+        for (i in markers) {
+            markers[i].setMap(null);
+        }
+        markers = [];
+        infos = [];
+    }
+}
 
+// clear infos function
+function clearInfos() {
+    if (infos) {
+        for (i in infos) {
+            if (infos[i].getMap()) {
+                infos[i].close();
+            }
+        }
+    }
+}
 
+// find address function
+function findAddress() {
+    var address = document.getElementById("gmap_where").value;
+
+    // script uses our 'geocoder' in order to find location by address name
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) { // and, if everything is ok
+
+            // we will center map
+            var addrLocation = results[0].geometry.location;
+            map.setCenter(addrLocation);
+
+            // store current coordinates into hidden variables
+            document.getElementById('lat').value = results[0].geometry.location.lat();
+            document.getElementById('lng').value = results[0].geometry.location.lng();
+
+            // and then - add new custom marker
+            var addrMarker = new google.maps.Marker({
+                position: addrLocation,
+                map: map,
+                title: results[0].formatted_address,
+                icon: 'marker.png'
+            });
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+// find custom places function
+function findPlaces() {
+
+    // prepare variables (filter)
+    var type = document.getElementById('gmap_type').value;
+    var radius = document.getElementById('gmap_radius').value;
+    var keyword = document.getElementById('gmap_keyword').value;
+
+    var lat = document.getElementById('lat').value;
+    var lng = document.getElementById('lng').value;
+    var cur_location = new google.maps.LatLng(lat, lng);
+
+    // prepare request to Places
+    var request = {
+        location: cur_location,
+        radius: radius,
+        types: [type]
+    };
+    if (keyword) {
+        request.keyword = [keyword];
+    }
+
+    // send request
+    service = new google.maps.places.PlacesService(map);
+    service.search(request, createMarkers);
+}
+
+// create markers (from 'findPlaces' function)
+function createMarkers(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+        // if we have found something - clear map (overlays)
+        clearOverlays();
+
+        // and create new markers by search result
+        for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+        }
+    } else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+        alert('Sorry, nothing is found');
+    }
+}
+
+// creare single marker function
+function createMarker(obj) {
+
+    // prepare new Marker object
+    var mark = new google.maps.Marker({
+        position: obj.geometry.location,
+        map: map,
+        title: obj.name
+    });
+    markers.push(mark);
+
+    // prepare info window
+    var infowindow = new google.maps.InfoWindow({
+        content: '<img src="' + obj.icon + '" /><font style="color:#000;">' + obj.name + 
+        '<br />Rating: ' + obj.rating + '<br />Vicinity: ' + obj.vicinity + '</font>'
+    });
+
+    // add event handler to current marker
+    google.maps.event.addListener(mark, 'click', function() {
+        clearInfos();
+        infowindow.open(map,mark);
+    });
+    infos.push(infowindow);
+}
+
+// initialization
 google.maps.event.addDomListener(window, 'load', initialize);
